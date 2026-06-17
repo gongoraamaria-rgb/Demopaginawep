@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COBACH EMSaD 01 Ukúm | Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="index">
+  <div class="topbar"><div class="container"><span>📍 Predio particular, Ukúm, Hopelchén, Campeche</span><span>☎ (01996) 82 2-02-91 · ✉ emsad01@cobacam.edu.mx</span></div></div>
+  <nav class="navbar"><div class="container nav-inner">
+    <a class="brand" href="index.html"><div class="logo">EMS</div><div class="brand-text"><strong>COBACH EMSaD 01 Ukúm</strong><span>Educación Media Superior a Distancia</span></div></a>
+    <div class="navlinks">
+      <a href="index.html">Inicio</a>
+      <a href="avisos.html">Avisos</a>
+      <a href="oferta.html">Oferta</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="galeria.html">Galería</a>
+      <a href="reglamento.html">Reglamento</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="authbox" id="authBox"></div>
+  </div></nav>
+
+  <header class="hero">
+    <div class="container hero-content">
+      <div>
+        <span class="tag">Clave 04EMS0001T</span>
+        <h1>Portal escolar EMSaD 01 Ukúm</h1>
+        <p>Página informativa y muro oficial para avisos, eventos, suspensiones, documentos y comunicación escolar. Los encargados publican y los usuarios pueden interactuar solo cuando el aviso lo permite.</p>
+        <div class="hero-actions">
+          <a class="btn" href="avisos.html">Ver avisos oficiales</a>
+          <a class="btn secondary" href="admin.html">Panel de encargados</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>Google</strong><span>inicio de sesión</span></div>
+          <div class="stat"><strong>Roles</strong><span>usuario, admin y super admin</span></div>
+          <div class="stat"><strong>Control</strong><span>comentarios y reacciones por aviso</span></div>
+        </div>
+      </div>
+      <div class="hero-card"><img src="assets/images/fachada-color.jpg" alt="Fachada EMSaD Ukúm"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section"><div class="container">
+      <div class="section-title"><div><h2>Sistema escolar con usuarios</h2><p>Esta primera versión ya deja planeado y armado el flujo: visitantes, usuarios con Google, admins encargados y super admin por correo fijo.</p></div></div>
+      <div class="grid cols-3">
+        <article class="card"><div class="icon">👥</div><h3>Usuarios</h3><p>Los alumnos o personas externas pueden iniciar sesión, crear su perfil y reaccionar o comentar solo si el aviso lo permite.</p></article>
+        <article class="card"><div class="icon">🛡️</div><h3>Admins</h3><p>Los encargados publican, editan, eliminan, fijan avisos y controlan las interacciones de cada publicación.</p></article>
+        <article class="card"><div class="icon">👑</div><h3>Super admin</h3><p>El primer dueño entra por correo fijo y puede convertir otros usuarios en administradores o bloquear cuentas.</p></article>
+      </div>
+    </div></section>
+
+    <section class="section" style="padding-top:0"><div class="container">
+      <div class="section-title"><div><h2>Avisos recientes</h2><p>Vista rápida de publicaciones escolares.</p></div><a class="btn secondary" href="avisos.html">Abrir muro completo</a></div>
+      <div id="postsFeed"></div>
+    </div></section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+
+  <!-- Firebase compat: solo se activa cuando llenas assets/js/config.js -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+
+  <script src="assets/js/local-db.js"></script>
+  <script src="assets/js/firebase-db.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/avisos.js"></script>
+  <script src="assets/js/pages.js"></script>
+  
+</body>
+</html>

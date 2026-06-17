@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // CAMBIA ESTE CORREO si cambia el super admin fijo.
+    function isSuperAdminEmail() {
+      return signedIn() && request.auth.token.email == "emsad01@cobacam.edu.mx";
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function hasUserDoc() {
+      return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isSuperAdmin() {
+      return isSuperAdminEmail() || (hasUserDoc() && userDoc().data.role == "super_admin");
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (hasUserDoc() && userDoc().data.role == "admin");
+    }
+
+    function isActive() {
+      return signedIn() && (!hasUserDoc() || userDoc().data.status != "blocked");
+    }
+
+    match /users/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow list: if isAdmin();
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && (
+          request.resource.data.role == "user" ||
+          (request.resource.data.role == "super_admin" && isSuperAdminEmail())
+        );
+
+      allow update: if isSuperAdmin()
+        || (
+          signedIn()
+          && request.auth.uid == uid
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.status == resource.data.status
+        );
+
+      allow delete: if isSuperAdmin();
+    }
+
+    match /posts/{postId} {
+      // Los avisos pueden incluir attachments: imágenes, videos, documentos y links.
+      allow read: if resource.data.visibility == "public" || signedIn() || isAdmin();
+      allow create: if isAdmin() && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+
+      allow create: if signedIn()
+        && isActive()
+        && request.resource.data.userId == request.auth.uid
+        && get(/databases/$(database)/documents/posts/$(request.resource.data.postId)).data.allowComments == true;
+
+      allow update, delete: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    match /reactions/{reactionId} {
+      allow read: if true;
+
+      allow create, update: if signedIn()
+        && isActive()
+        && request.resource.data.userId == request.auth.uid
+        && get(/databases/$(database)/documents/posts/$(request.resource.data.postId)).data.allowReactions == true;
+
+      allow delete: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+    }
+  }
+}

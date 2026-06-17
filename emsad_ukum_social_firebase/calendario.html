@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendario | EMSaD 01 Ukúm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="calendario">
+  <div class="topbar"><div class="container"><span>📍 Predio particular, Ukúm, Hopelchén, Campeche</span><span>☎ (01996) 82 2-02-91 · ✉ emsad01@cobacam.edu.mx</span></div></div>
+  <nav class="navbar"><div class="container nav-inner">
+    <a class="brand" href="index.html"><div class="logo">EMS</div><div class="brand-text"><strong>COBACH EMSaD 01 Ukúm</strong><span>Educación Media Superior a Distancia</span></div></a>
+    <div class="navlinks">
+      <a href="index.html">Inicio</a>
+      <a href="avisos.html">Avisos</a>
+      <a href="oferta.html">Oferta</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="galeria.html">Galería</a>
+      <a href="reglamento.html">Reglamento</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="authbox" id="authBox"></div>
+  </div></nav>
+
+  <header class="page-hero"><div class="container"><h1>Calendario escolar</h1><p>Sección preparada para eventos, exámenes, reuniones y suspensión de clases.</p></div></header>
+  <main class="section"><div class="container">
+    <div class="grid cols-2">
+      <article class="card"><div class="icon">📅</div><h3>Eventos próximos</h3><p>En la versión final se conectará con un calendario real o con publicaciones marcadas como evento.</p></article>
+      <article class="card"><div class="icon">⚠️</div><h3>Suspensiones</h3><p>Los avisos urgentes pueden aparecer aquí automáticamente.</p></article>
+    </div>
+  </div></main>
+
+  <script src="assets/js/config.js"></script>
+
+  <!-- Firebase compat: solo se activa cuando llenas assets/js/config.js -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+
+  <script src="assets/js/local-db.js"></script>
+  <script src="assets/js/firebase-db.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/avisos.js"></script>
+  <script src="assets/js/pages.js"></script>
+  
+</body>
+</html>

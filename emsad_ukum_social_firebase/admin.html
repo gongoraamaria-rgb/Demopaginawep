@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Admin | EMSaD 01 Ukúm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="admin">
+  <div class="topbar"><div class="container"><span>📍 Predio particular, Ukúm, Hopelchén, Campeche</span><span>☎ (01996) 82 2-02-91 · ✉ emsad01@cobacam.edu.mx</span></div></div>
+  <nav class="navbar"><div class="container nav-inner">
+    <a class="brand" href="index.html"><div class="logo">EMS</div><div class="brand-text"><strong>COBACH EMSaD 01 Ukúm</strong><span>Educación Media Superior a Distancia</span></div></a>
+    <div class="navlinks">
+      <a href="index.html">Inicio</a>
+      <a href="avisos.html">Avisos</a>
+      <a href="oferta.html">Oferta</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="galeria.html">Galería</a>
+      <a href="reglamento.html">Reglamento</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="authbox" id="authBox"></div>
+  </div></nav>
+
+  <header class="page-hero"><div class="container"><h1>Panel de encargados</h1><p>Solo administradores pueden publicar, modificar o eliminar avisos. El admin decide si cada aviso permite comentarios y reacciones.</p></div></header>
+  <main class="section"><div class="container" id="adminProtected">
+    <div id="adminGate"></div>
+    <div id="adminContent">
+    <div class="admin-layout">
+      <section class="panel">
+        <h2 id="formTitle">Crear nuevo aviso</h2>
+        <form id="postForm" class="form-grid">
+          <input type="hidden" id="currentImageUrl">
+          <div class="field full"><label>Título</label><input id="title" required placeholder="Ej. No hay clases mañana por tormenta"></div>
+          <div class="field"><label>Categoría</label><select id="category"></select></div>
+          <div class="field"><label>Visibilidad</label><select id="visibility"><option value="public">Público</option><option value="registered">Solo usuarios registrados</option></select></div>
+          <div class="field"><label>Estado del aviso</label><select id="postStatus"><option value="published">Publicado</option><option value="draft">Borrador</option><option value="scheduled">Programado</option><option value="archived">Archivado</option></select></div>
+          <div class="field full"><label>Contenido</label><textarea id="content" required placeholder="Escribe el comunicado..."></textarea></div>
+          <div class="field full attachment-field">
+            <label>Adjuntos del aviso</label>
+            <div class="attachment-uploader">
+              <div class="upload-buttons">
+                <label class="upload-tile">🖼️ Imágenes
+                  <input id="attachmentImages" type="file" accept="image/*" multiple>
+                </label>
+                <label class="upload-tile">🎥 Videos
+                  <input id="attachmentVideos" type="file" accept="video/*" multiple>
+                </label>
+                <label class="upload-tile">📄 Documentos
+                  <input id="attachmentDocs" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain" multiple>
+                </label>
+              </div>
+              <small>Puedes adjuntar varias imágenes, videos, documentos y links. Si eliges algo por error, toca la X antes de publicar.</small>
+              <div class="external-adder">
+                <select id="externalType">
+                  <option value="link">🔗 Link externo</option>
+                  <option value="video">🎥 Video externo</option>
+                  <option value="document">📄 Documento externo</option>
+                </select>
+                <input id="externalName" placeholder="Nombre opcional del adjunto">
+                <input id="externalUrl" type="url" placeholder="https://...">
+                <button class="btn small secondary" id="addExternalBtn" type="button">Agregar</button>
+              </div>
+              <div id="attachmentsPreview" class="attachments-admin-preview"></div>
+            </div>
+          </div>
+          <div class="field full"><label>Control de interacción</label><div class="checks">
+            <label class="check"><input id="allowComments" type="checkbox" checked> Permitir comentarios</label>
+            <label class="check"><input id="allowReactions" type="checkbox" checked> Permitir reacciones</label>
+            <label class="check"><input id="pinned" type="checkbox"> Fijar aviso arriba</label>
+            <label class="check"><input id="urgent" type="checkbox"> Marcar como urgente</label>
+          </div></div>
+          <div class="field full toolbar"><button class="btn" id="saveBtn">Publicar aviso</button><button type="button" class="btn secondary" id="clearBtn">Limpiar</button></div>
+        </form>
+      </section>
+      <aside class="panel"><h3>Regla principal</h3><p>El admin publica; el super admin gestiona roles. Un usuario normal no puede ver este panel.</p><div class="notice ok">Super admin inicial por correo fijo: <span class="kbd">assets/js/config.js</span></div></aside>
+    </div>
+    <section class="section admin-manager-section" style="padding-bottom:0">
+      <div class="section-title">
+        <div>
+          <h2>Centro de gestión de avisos</h2>
+          <p>Busca, filtra, organiza, edita, duplica, archiva y elimina comunicados sin tener una lista interminable.</p>
+        </div>
+        <button class="btn secondary small" id="selectVisibleBtn" type="button">Seleccionar visibles</button>
+      </div>
+
+      <div class="manager-shell">
+        <div class="manager-kpis" id="adminStats"></div>
+
+        <div class="manager-toolbar">
+          <div class="search-field">
+            <span>🔎</span>
+            <input id="noticeSearch" type="search" placeholder="Buscar por título, contenido, autor o categoría...">
+          </div>
+          <select id="noticeCategoryFilter" title="Filtrar por categoría"></select>
+          <select id="noticeInteractionFilter" title="Filtrar por interacción">
+            <option value="all">Todas las configuraciones</option>
+            <option value="comments_on">Con comentarios</option>
+            <option value="comments_off">Sin comentarios</option>
+            <option value="reactions_on">Con reacciones</option>
+            <option value="reactions_off">Sin reacciones</option>
+            <option value="urgent">Urgentes</option>
+            <option value="pinned">Fijados</option>
+            <option value="public">Públicos</option>
+            <option value="registered">Solo registrados</option>
+          </select>
+          <select id="noticeSort" title="Ordenar avisos">
+            <option value="newest">Más recientes</option>
+            <option value="oldest">Más antiguos</option>
+            <option value="title">Título A-Z</option>
+            <option value="pinned">Fijados primero</option>
+            <option value="urgent">Urgentes primero</option>
+          </select>
+          <select id="noticePageSize" title="Avisos por página">
+            <option value="10">10 por página</option>
+            <option value="15">15 por página</option>
+            <option value="25">25 por página</option>
+          </select>
+        </div>
+
+        <div class="status-tabs" id="noticeStatusTabs"></div>
+        <div class="bulk-bar hidden" id="bulkBar"></div>
+        <div id="adminPosts"></div>
+        <div class="admin-pagination" id="adminPagination"></div>
+      </div>
+    </section>
+    </div>
+  </div></main>
+
+
+  <!-- Cuadro flotante para editar avisos: no guarda nada hasta presionar "Guardar cambios" -->
+  <div class="modal-overlay hidden" id="editPostModal" aria-hidden="true">
+    <div class="modal-card edit-modal-card" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <div class="modal-head">
+        <div>
+          <span class="modal-kicker">Centro de gestión de avisos</span>
+          <h2 id="editModalTitle">Editar aviso</h2>
+          <p>Modifica el comunicado aquí. Si cierras o cancelas, los cambios no se guardan.</p>
+        </div>
+        <button class="modal-close" id="editModalClose" type="button" aria-label="Cerrar edición">×</button>
+      </div>
+
+      <form id="editPostForm" class="form-grid modal-form">
+        <input type="hidden" id="editPostId">
+        <input type="hidden" id="editCurrentImageUrl">
+
+        <div class="field full">
+          <label>Título</label>
+          <input id="editTitle" required placeholder="Ej. No hay clases mañana por tormenta">
+        </div>
+
+        <div class="field">
+          <label>Categoría</label>
+          <select id="editCategory"></select>
+        </div>
+
+        <div class="field">
+          <label>Visibilidad</label>
+          <select id="editVisibility">
+            <option value="public">Público</option>
+            <option value="registered">Solo usuarios registrados</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Estado del aviso</label>
+          <select id="editPostStatus">
+            <option value="published">Publicado</option>
+            <option value="draft">Borrador</option>
+            <option value="scheduled">Programado</option>
+            <option value="archived">Archivado</option>
+            <option value="deleted">Papelera</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>Contenido</label>
+          <textarea id="editContent" required placeholder="Escribe el comunicado..."></textarea>
+        </div>
+
+        <div class="field full attachment-field">
+          <label>Adjuntos del aviso</label>
+          <div class="attachment-uploader">
+            <div class="upload-buttons">
+              <label class="upload-tile">🖼️ Agregar imágenes
+                <input id="editAttachmentImages" type="file" accept="image/*" multiple>
+              </label>
+              <label class="upload-tile">🎥 Agregar videos
+                <input id="editAttachmentVideos" type="file" accept="video/*" multiple>
+              </label>
+              <label class="upload-tile">📄 Agregar documentos
+                <input id="editAttachmentDocs" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain" multiple>
+              </label>
+            </div>
+            <small>Los adjuntos actuales se conservan si no los quitas. Los nuevos solo se guardan al presionar “Guardar cambios”.</small>
+            <div class="external-adder">
+              <select id="editExternalType">
+                <option value="link">🔗 Link externo</option>
+                <option value="video">🎥 Video externo</option>
+                <option value="document">📄 Documento externo</option>
+              </select>
+              <input id="editExternalName" placeholder="Nombre opcional del adjunto">
+              <input id="editExternalUrl" type="url" placeholder="https://...">
+              <button class="btn small secondary" id="editAddExternalBtn" type="button">Agregar</button>
+            </div>
+            <div id="editAttachmentsPreview" class="attachments-admin-preview"></div>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label>Control de interacción</label>
+          <div class="checks">
+            <label class="check"><input id="editAllowComments" type="checkbox"> Permitir comentarios</label>
+            <label class="check"><input id="editAllowReactions" type="checkbox"> Permitir reacciones</label>
+            <label class="check"><input id="editPinned" type="checkbox"> Fijar aviso arriba</label>
+            <label class="check"><input id="editUrgent" type="checkbox"> Marcar como urgente</label>
+          </div>
+        </div>
+
+        <div class="field full modal-actions">
+          <button class="btn" id="editSaveBtn" type="submit">Guardar cambios</button>
+          <button class="btn secondary" id="editCancelBtn" type="button">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+
+  <!-- Firebase compat: solo se activa cuando llenas assets/js/config.js -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+
+  <script src="assets/js/local-db.js"></script>
+  <script src="assets/js/firebase-db.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/avisos.js"></script>
+  <script src="assets/js/pages.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
